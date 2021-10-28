@@ -1,0 +1,18 @@
+include MANIFEST.in
+include requirements.txt
+include *.json
+include *.md
+include *.py
+include *.txt
+recursive-include herbert_app *.css
+recursive-include herbert_app *.csv
+recursive-include herbert_app *.html
+recursive-include herbert_app *.ico
+recursive-include herbert_app *.js
+recursive-include herbert_app *.json
+recursive-include herbert_app *.md
+recursive-include herbert_app *.png
+recursive-include herbert_app *.py
+recursive-include herbert_app *.svg
+recursive-include herbert_app *.txt
+recursive-exclude herbert_app *.pyc
