@@ -35,11 +35,13 @@ def check_pe_status(pe):
                           WHERE payroll_entry_hd=%s AND employee=%s AND docstatus=1""", (pe, emp.employee))
         if net_pay:
             total_pe += net_pay[0][0]
-
-    if total_cred[0][0] < total_pe and total_cred[0][0] > 0.0:
-        return "Partially Disbursed"
-    elif total_cred[0][0] >= total_pe:
-        return "Fully Disbursed"
+    if total_cred[0][0]:
+        if total_cred[0][0] < total_pe and total_cred[0][0] > 0.0:
+            return "Partially Disbursed"
+        elif total_cred[0][0] >= total_pe:
+            return "Fully Disbursed"
+        else:
+            None
     else:
         None
 
