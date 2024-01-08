@@ -56,7 +56,7 @@ frappe.ui.form.on("Salary Slip", {
 
 	set_end_date: function(frm){
 		frappe.call({
-			method: 'erpnext.hr.doctype.payroll_entry.payroll_entry.get_end_date',
+			method: 'hrms.payroll.doctype.payroll_entry.payroll_entry.get_end_date',
 			args: {
 				frequency: frm.doc.payroll_frequency,
 				start_date: frm.doc.start_date
