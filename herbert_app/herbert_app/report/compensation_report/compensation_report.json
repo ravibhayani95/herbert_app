@@ -1,0 +1,33 @@
+{
+ "add_total_row": 1,
+ "columns": [],
+ "creation": "2023-03-10 00:51:55.326081",
+ "disable_prepared_report": 0,
+ "disabled": 0,
+ "docstatus": 0,
+ "doctype": "Report",
+ "filters": [],
+ "idx": 0,
+ "is_standard": "Yes",
+ "letter_head": "HCDC Letterhead Standard",
+ "modified": "2023-03-11 02:46:00.226335",
+ "modified_by": "Administrator",
+ "module": "Herbert App",
+ "name": "Compensation Report",
+ "owner": "Administrator",
+ "prepared_report": 0,
+ "ref_doctype": "Salary Slip",
+ "report_name": "Compensation Report",
+ "report_type": "Script Report",
+ "roles": [
+  {
+   "role": "Auditor"
+  },
+  {
+   "role": "HR Manager"
+  },
+  {
+   "role": "Accounts Manager"
+  }
+ ]
+}

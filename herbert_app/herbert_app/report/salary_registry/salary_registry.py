@@ -19,7 +19,7 @@ def execute(filters=None):
             {"label": "Project", 'width': 300, "fieldname": "project"},]
 
     columns += [
-        {"label": "Last Name", 'width': 100, "fieldname": "surname"},
+        {"label": "Last Name", 'width': 100, "fieldname": "last_name"},
         {"label": "First Name", 'width': 120, "fieldname": "first_name"},
         {"label": "Middle Name", 'width': 100, "fieldname": "middle_name"},
         {"label": "Designation", 'width': 100, "fieldname": "designation"},
@@ -82,11 +82,11 @@ def execute(filters=None):
         else:
             conditions += " WHERE (`tabSalary Slip`.docstatus = '{0}')".format(docstatus)
 
-    order_by = " ORDER BY `tabEmployee`.surname ASC, `tabEmployee`.first_name ASC, `tabEmployee`.middle_name ASC"
+    order_by = " ORDER BY `tabEmployee`.last_name ASC, `tabEmployee`.first_name ASC, `tabEmployee`.middle_name ASC"
 
 
     sql = """SELECT `tabSalary Slip`.name,`tabEmployee`.first_name,
-                            `tabEmployee`.surname,`tabEmployee`.middle_name,
+                            `tabEmployee`.last_name,`tabEmployee`.middle_name,
                              `tabSalary Slip`.payment_days, `tabSalary Slip`.undertime_hours,
                              `tabSalary Slip`.overtime_hours, `tabSalary Slip`.gross_pay,
                              `tabSalary Slip`.total_deduction, `tabSalary Slip`.net_pay,
@@ -113,7 +113,7 @@ def execute(filters=None):
             record.update({"payroll_no": '<a href="/desk#Form/Payroll%20Entry/' + record["payroll_no"] + '">' + record["payroll_no"] + '</a>'})
 
     sql = """SELECT `tabSalary Slip`.name,`tabEmployee`.first_name,
-                                `tabEmployee`.surname,`tabEmployee`.middle_name,
+                                `tabEmployee`.last_name,`tabEmployee`.middle_name,
                                  `tabSalary Slip`.payment_days, `tabSalary Slip`.undertime_hours,
                                  `tabSalary Slip`.overtime_hours, `tabSalary Slip`.gross_pay,
                                  `tabSalary Slip`.total_deduction, `tabSalary Slip`.net_pay,

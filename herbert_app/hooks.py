@@ -121,4 +121,4 @@ app_license = "MIT"
 # }
 
 
-fixtures = ["Custom Script", "Property Setter", "Print Format"]
+fixtures = [ "Property Setter", "Print Format","Custom Field"]

@@ -9,14 +9,17 @@ from frappe.utils import add_days, cint, cstr, flt, getdate, rounded, date_diff,
 from frappe.model.naming import make_autoname
 
 from frappe import msgprint, _
-from erpnext.hr.doctype.payroll_entry.payroll_entry import get_start_end_dates
-from erpnext.hr.doctype.employee.employee import get_holiday_list_for_employee
+from hrms.payroll.doctype.payroll_entry.payroll_entry import get_start_end_dates
+from erpnext.setup.doctype.employee.employee import get_holiday_list_for_employee
 from erpnext.utilities.transaction_base import TransactionBase
 from frappe.utils.background_jobs import enqueue
-from erpnext.hr.doctype.additional_salary.additional_salary import get_additional_salary_component
-from erpnext.hr.doctype.payroll_period.payroll_period import get_period_factor, get_payroll_period
-from erpnext.hr.doctype.employee_benefit_application.employee_benefit_application import get_benefit_component_amount
-from erpnext.hr.doctype.employee_benefit_claim.employee_benefit_claim import get_benefit_claim_amount, get_last_payroll_period_benefits
+
+# from erpnext.hr.doctype.additional_salary.additional_salary import get_additional_salary_component
+from hrms.payroll.doctype.additional_salary.additional_salary import get_additional_salaries
+
+from hrms.payroll.doctype.payroll_period.payroll_period import get_period_factor, get_payroll_period
+from hrms.payroll.doctype.employee_benefit_application.employee_benefit_application import get_benefit_component_amount
+from hrms.payroll.doctype.employee_benefit_claim.employee_benefit_claim import get_benefit_claim_amount, get_last_payroll_period_benefits
 
 class SalarySlip(TransactionBase):
 	def __init__(self, *args, **kwargs):
@@ -178,7 +181,7 @@ class SalarySlip(TransactionBase):
 				.format(self.employee), title=_('Salary Structure Missing'))
 
 	def pull_sal_struct(self):
-		from erpnext.hr.doctype.salary_structure.salary_structure import make_salary_slip
+		from hrms.payroll.doctype.salary_structure.salary_structure import make_salary_slip
 
 		if self.salary_slip_based_on_timesheet:
 			self.salary_structure = self._salary_structure_doc.name
@@ -400,13 +403,25 @@ class SalarySlip(TransactionBase):
 						self.update_component_row(frappe._dict(last_benefit.struct_row), amount, "earnings")
 
 	def add_additional_salary_components(self):
-		additional_components = get_additional_salary_component(self.employee, self.start_date, self.end_date)
-		if additional_components:
-			for additional_component in additional_components:
-				amount = additional_component.amount
-				overwrite = additional_component.overwrite
-				key = "earnings" if additional_component.type == "Earning" else "deductions"
-				self.update_component_row(frappe._dict(additional_component.struct_row), amount, key, overwrite=overwrite)
+		# additional_components = get_additional_salary_component(self.employee, self.start_date, self.end_date)
+		# if additional_components:
+		# 	for additional_component in additional_components:
+		# 		amount = additional_component.amount
+		# 		overwrite = additional_component.overwrite
+		# 		key = "earnings" if additional_component.type == "Earning" else "deductions"
+		# 		self.update_component_row(frappe._dict(additional_component.struct_row), amount, key, overwrite=overwrite)
+		additional_salaries = get_additional_salaries(
+			self.employee, self.start_date, self.end_date, component_type
+		)
+
+		for additional_salary in additional_salaries:
+			self.update_component_row(
+				get_salary_component_data(additional_salary.component),
+				additional_salary.amount,
+				component_type,
+				additional_salary,
+				is_recurring=additional_salary.is_recurring,
+			)
 
 	def add_tax_components(self, payroll_period):
 		# Calculate variable_based_on_taxable_salary after all components updated in salary slip
